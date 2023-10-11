@@ -1,0 +1,54 @@
+/* 使用 Roboto 字體 */
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1em;
+    background-color: #4CAF50; /* 更改背景顏色 */
+    color: #fff; /* 文字顏色為白色 */
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+}
+
+nav li {
+    display: inline;
+    margin-left: 20px;
+}
+
+main {
+    display: flex;
+    flex-direction: row;
+}
+
+#toolbar {
+    flex: 1;
+    padding: 1em;
+    border-right: 1px solid #ddd;
+}
+
+#map-container {
+    flex: 5;
+    height: 500px;
+}
+
+aside {
+    flex: 2;
+    border-left: 1px solid #ddd;
+    padding: 1em;
+}
+
+footer {
+    padding: 1em;
+    background-color: #333333; /* 更改背景顏色 */
+    color: #fff; /* 文字顏色為白色 */
+    text-align: center;
+}
