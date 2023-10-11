@@ -6,6 +6,10 @@
     <title>Your Map App Name</title>
     <link rel="stylesheet" href="/public/styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+
+    <!-- Leaflet CSS and JS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"/>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 </head>
 <body>
 
@@ -56,6 +60,38 @@
         <li><a href="/terms-and-conditions">條款和條件</a></li>
     </ul>
 </footer>
+
+<!-- JavaScript for Map Controls -->
+<script>
+    const startCoords = <%- startCoords %>;
+    const zoomLevel = <%- zoomLevel %>;
+
+    document.addEventListener('DOMContentLoaded', function() {
+        // 初始化 Leaflet 地圖
+        let mapInstance = window.L.map('map-container').setView(startCoords, zoomLevel);
+
+        // 添加預設的地圖圖層
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(mapInstance);
+
+        // Zoom in & Zoom out 按鈕
+        document.getElementById('zoom-in').addEventListener('click', function() {
+            mapInstance.zoomIn();
+        });
+
+        document.getElementById('zoom-out').addEventListener('click', function() {
+            mapInstance.zoomOut();
+        });
+
+        // 圖層切換
+        document.querySelector('select').addEventListener('change', function(e) {
+            if (e.target.value === 'layer1') {
+                // 這邊你可以添加 Layer1 的操作，例如添加或移除圖磚
+            } else if (e.target.value === 'layer2') {
+                // 這邊你可以添加 Layer2 的操作
+            }
+        });
+    });
+</script>
 
 </body>
 </html>
