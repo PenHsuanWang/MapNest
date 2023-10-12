@@ -10,7 +10,7 @@ header {
     justify-content: space-between;
     align-items: center;
     padding: 1em;
-    background-color: #4CAF50; /* 更改背景顏色 */
+    background-color: #2e6b67; /* 更改背景顏色 */
     color: #fff; /* 文字顏色為白色 */
 }
 
@@ -37,7 +37,8 @@ main {
 
 #map-container {
     flex: 5;
-    height: 500px;
+    height: calc(100vh - 150px); /* 將地圖高度設置為視窗高度減去預留的高度，這樣它將填充剩餘的空間 */
+    border: 1px solid #ddd; /* 為地圖容器添加邊框 */
 }
 
 aside {
@@ -52,3 +53,28 @@ footer {
     color: #fff; /* 文字顏色為白色 */
     text-align: center;
 }
+
+button {
+    padding: 10px 15px;
+    margin: 5px;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    background-color: #4CAF50; /* 更改按鈕背景顏色 */
+    color: #fff; /* 按鈕文字顏色為白色 */
+    transition: background-color 0.3s ease; /* 過渡效果 */
+}
+
+button:hover {
+    background-color: #45a049; /* 滑鼠懸停時的背景顏色 */
+}
+
+
+select {
+    padding: 10px;
+    margin: 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+}
+
