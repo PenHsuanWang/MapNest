@@ -1,32 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Map App Name</title>
-    <link rel="stylesheet" href="/styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+<!-- /frontend/src/views/index.ejs -->
 
-    <!-- Leaflet CSS and JS -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"/>
-    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-</head>
-<body>
-
-<!-- Header -->
-<header>
-    <div id="logo">Your Map App Name/Logo</div>
-    <nav>
-        <ul>
-            <li><a href="/">首頁</a></li>
-            <li><a href="/about">關於</a></li>
-            <li><a href="/contact">聯繫我們</a></li>
-        </ul>
-    </nav>
-</header>
-
-<!-- Main Body -->
-<main>
+<%- include('./layouts/base.ejs', {
+    title: 'Your Map App Name',
+    body: `
     <!-- Toolbar -->
     <div id="toolbar">
         <select>
@@ -39,7 +15,7 @@
 
     <!-- Map Area -->
     <div id="map-container">
-        <%- map %>
+        ${map}
     </div>
 
     <!-- Sidebar -->
@@ -50,48 +26,37 @@
             <li><a href="/settings">使用者設定</a></li>
         </ul>
     </aside>
-</main>
 
-<!-- Footer -->
-<footer>
-    <p>© 2023 Your Map App. All Rights Reserved.</p>
-    <ul>
-        <li><a href="/privacy-policy">隱私政策</a></li>
-        <li><a href="/terms-and-conditions">條款和條件</a></li>
-    </ul>
-</footer>
+    <!-- JavaScript for Map Controls -->
+    <script>
+        const startCoords = ${startCoords};
+        const zoomLevel = ${zoomLevel};
 
-<!-- JavaScript for Map Controls -->
-<script>
-    const startCoords = <%- startCoords %>;
-    const zoomLevel = <%- zoomLevel %>;
+        document.addEventListener('DOMContentLoaded', function() {
+            // 初始化 Leaflet 地圖
+            let mapInstance = window.L.map('map-container').setView(startCoords, zoomLevel);
 
-    document.addEventListener('DOMContentLoaded', function() {
-        // 初始化 Leaflet 地圖
-        let mapInstance = window.L.map('map-container').setView(startCoords, zoomLevel);
+            // 添加預設的地圖圖層
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(mapInstance);
 
-        // 添加預設的地圖圖層
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(mapInstance);
+            // Zoom in & Zoom out 按鈕
+            document.getElementById('zoom-in').addEventListener('click', function() {
+                mapInstance.zoomIn();
+            });
 
-        // Zoom in & Zoom out 按鈕
-        document.getElementById('zoom-in').addEventListener('click', function() {
-            mapInstance.zoomIn();
+            document.getElementById('zoom-out').addEventListener('click', function() {
+                mapInstance.zoomOut();
+            });
+
+            // 圖層切換
+            document.querySelector('select').addEventListener('change', function(e) {
+                if (e.target.value === 'layer1') {
+                    // 這邊你可以添加 Layer1 的操作，例如添加或移除圖磚
+                } else if (e.target.value === 'layer2') {
+                    // 這邊你可以添加 Layer2 的操作
+                }
+            });
         });
-
-        document.getElementById('zoom-out').addEventListener('click', function() {
-            mapInstance.zoomOut();
-        });
-
-        // 圖層切換
-        document.querySelector('select').addEventListener('change', function(e) {
-            if (e.target.value === 'layer1') {
-                // 這邊你可以添加 Layer1 的操作，例如添加或移除圖磚
-            } else if (e.target.value === 'layer2') {
-                // 這邊你可以添加 Layer2 的操作
-            }
-        });
-    });
-</script>
-
-</body>
-</html>
+    </script>
+    `
+}) %>
