@@ -5,18 +5,16 @@
     body: `
     <!-- Toolbar -->
     <div id="toolbar">
-        <select>
-            <option value="layer1">Layer 1</option>
-            <option value="layer2">Layer 2</option>
+        <select id="layer-selector">
+            <option value="openstreetmap">OpenStreetMap</option>
+            <option value="sinica">中研院日治地圖</option>
         </select>
         <button id="zoom-in">Zoom In</button>
         <button id="zoom-out">Zoom Out</button>
     </div>
 
     <!-- Map Area -->
-    <div id="map-container">
-        ${map}
-    </div>
+    <div id="map-container" style="width: 100%;"></div>
 
     <!-- Sidebar -->
     <aside>
@@ -27,40 +25,35 @@
         </ul>
     </aside>
 
-    // JavaScript for Map Controls
     <script>
-        const startCoords = ${startCoords};
-        const zoomLevel = ${zoomLevel};
+        const startCoords = [23.6978, 120.9605];
+        const zoomLevel = 8;
         let currentLayer;
 
         document.addEventListener('DOMContentLoaded', function() {
             // 初始化 Leaflet 地圖
-            let mapInstance = window.L.map('map-container').setView(startCoords, zoomLevel);
+            const mapInstance = L.map('map-container').setView(startCoords, zoomLevel);
 
-            // 預設的地圖圖層
-            const defaultLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
-            currentLayer = defaultLayer;
-            defaultLayer.addTo(mapInstance);
+            const layers = {
+                "openstreetmap": L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'),
+                "sinica": L.tileLayer('https://gis.sinica.edu.tw/tileserver/file-exists.php?img=JM50K_1924_new-png-{z}-{x}-{y}')
+            }
 
-            // Zoom in & Zoom out 按鈕
+            currentLayer = layers["openstreetmap"];
+            currentLayer.addTo(mapInstance);
+
+            document.getElementById('layer-selector').addEventListener('change', function(e) {
+                mapInstance.removeLayer(currentLayer);
+                currentLayer = layers[e.target.value];
+                currentLayer.addTo(mapInstance);
+            });
+
             document.getElementById('zoom-in').addEventListener('click', function() {
                 mapInstance.zoomIn();
             });
 
             document.getElementById('zoom-out').addEventListener('click', function() {
                 mapInstance.zoomOut();
-            });
-
-            // 圖層切換
-            document.querySelector('select').addEventListener('change', function(e) {
-                mapInstance.removeLayer(currentLayer);
-                if (e.target.value === 'layer1') {
-                    // 使用 OpenStreetMap 圖層
-                    currentLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
-                } else if (e.target.value === 'layer2') {
-                    currentLayer = L.tileLayer('https://gis.sinica.edu.tw/tileserver/file-exists.php?img=JM50K_1924_new-png-{z}-{x}-{y}');
-                }
-                currentLayer.addTo(mapInstance);
             });
         });
     </script>
