@@ -9,8 +9,9 @@ app.set('views', './src/views');
 app.use(express.static('public'));
 
 app.get('/', async (req, res) => {
+    const layer = req.query.layer || 'openstreetmap'; // 從查詢參數中取得圖層資訊
     try {
-        const response = await axios.get('http://localhost:5001/generate_map');
+        const response = await axios.get(`http://localhost:5001/generate_map?layer=${layer}`);
         const mapHtml = response.data.map_html;
         const startCoords = response.data.start_coords;
         const zoomLevel = response.data.zoom_level;
@@ -20,6 +21,7 @@ app.get('/', async (req, res) => {
         res.status(500).send("Error fetching map.");
     }
 });
+
 
 
 app.listen(PORT, () => {

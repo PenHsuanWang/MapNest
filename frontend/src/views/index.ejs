@@ -27,17 +27,20 @@
         </ul>
     </aside>
 
-    <!-- JavaScript for Map Controls -->
+    // JavaScript for Map Controls
     <script>
         const startCoords = ${startCoords};
         const zoomLevel = ${zoomLevel};
+        let currentLayer;
 
         document.addEventListener('DOMContentLoaded', function() {
             // 初始化 Leaflet 地圖
             let mapInstance = window.L.map('map-container').setView(startCoords, zoomLevel);
 
-            // 添加預設的地圖圖層
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(mapInstance);
+            // 預設的地圖圖層
+            const defaultLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
+            currentLayer = defaultLayer;
+            defaultLayer.addTo(mapInstance);
 
             // Zoom in & Zoom out 按鈕
             document.getElementById('zoom-in').addEventListener('click', function() {
@@ -50,11 +53,14 @@
 
             // 圖層切換
             document.querySelector('select').addEventListener('change', function(e) {
+                mapInstance.removeLayer(currentLayer);
                 if (e.target.value === 'layer1') {
-                    // 這邊你可以添加 Layer1 的操作，例如添加或移除圖磚
+                    // 使用 OpenStreetMap 圖層
+                    currentLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
                 } else if (e.target.value === 'layer2') {
-                    // 這邊你可以添加 Layer2 的操作
+                    currentLayer = L.tileLayer('https://gis.sinica.edu.tw/tileserver/file-exists.php?img=JM50K_1924_new-png-{z}-{x}-{y}');
                 }
+                currentLayer.addTo(mapInstance);
             });
         });
     </script>
